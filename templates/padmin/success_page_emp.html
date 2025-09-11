@@ -1,0 +1,9 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %}Success{% endblock title %}
+{% block content %}
+  <h2>✅ Employee  info saved successfully!</h2>
+
+  
+  <a href="{% url 'EmpInfoEntry' %}">Add Another Employee Info</a>
+{% endblock content %}

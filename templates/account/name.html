@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}" >
+    <title>Document</title>
+</head>
+<body>
+    <h1>Book</h1>
+
+    <p> {{ context1  }}</p>
+      
+    {% for tn in context1 %}<br />
+    {{ forloop.counter }}{{'.'}} {{ tn | upper}}   
+    {% endfor %}
+<br /><br /><br />
+<img src="{% static 'img/account/SRB.jpg' %}" alt="Logo" />
+<img src="{% static 'img/account/tboy.jpeg' %}" alt="Logo" />
+
+<ul style="list-style: none;">
+  <li>✔️ Task Completed</li>
+  <li>⚠️ Warning</li>
+  <Li>✔️ </Li>
+</ul>
+
+</body>
+</html>

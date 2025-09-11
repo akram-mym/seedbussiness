@@ -1,0 +1,17 @@
+{% extends 'padmin/base1.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>User Profile View</h2>
+    <table class="table table-bordered">
+        <tr><th>Username</th><td>{{ profile.user.username }}</td></tr>
+        <tr><th>Employee</th><td>{{ profile.employee_id.EmpName|default:"N/A" }}</td></tr>
+        <tr><th>Emp ID</th><td>{{ profile.employee_id.EmpId|default:"N/A" }}</td></tr>
+        <tr><th>Status</th><td>{{ profile.status }}</td></tr>
+        <tr><th>Allowed App</th><td>{{ profile.get_allowed_app_display }}</td></tr>
+        <tr><th>Block</th><td>{{ profile.block_id }}</td></tr>
+        <tr><th>B Year</th><td>{{ profile.byear }}</td></tr>
+        <tr><th>Company</th><td>{{ profile.com_id }}</td></tr>
+    </table>
+    <a href="{% url 'padmin:userprofile_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+{% endblock %}

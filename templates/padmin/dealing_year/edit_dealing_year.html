@@ -1,0 +1,30 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %} Edit Dealing Year {% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Dealing Year</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.dysl.label_tag }}
+            {{ form.dysl }}
+        </div>
+        <div class="mb-3">
+            {{ form.dy_session.label_tag }}
+            {{ form.dy_session }}
+        </div>
+        <div class="form-check mb-3">
+            {{ form.busy_status }}
+            {{ form.busy_status.label_tag }}
+        </div>
+        <div class="mb-3">
+            {{ form.com_id.label_tag }}
+            {{ form.com_id }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        
+    </form>
+</div>
+{% endblock %}

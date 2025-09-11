@@ -1,0 +1,150 @@
+{% extends 'padmin/base1.html' %}
+
+{% load static %}
+
+{% block title %} Company Info Entry  {% endblock title  %}
+
+{% block alert %}This is  Company Info Entry.  {% endblock alert  %}
+
+{% block content %} 
+<center><h2>Company Information</h2></center>
+<style>
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .form-row label {
+    width: 150px;       /* লেবেলের জন্য ফিক্সড জায়গা */
+    margin-right: 10px; /* ইনপুটের পাশে স্পেস */
+    text-align: right;
+    font-weight: bold;
+  }
+  .form-row input, 
+  .form-row select, 
+  .form-row textarea {
+    flex: 1;            /* ইনপুট পুরো বাকি জায়গা নেবে */
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .errorlist {
+    color: red;
+    margin-left: 160px; /* লেবেলের জায়গায় একটু ম্যার্জ দিয়ে নিচে দেখানো */
+    margin-top: 2px;
+    list-style: none;
+    padding-left: 0;
+  }
+  .logo {
+  height: 60px;
+  width: auto;
+}
+
+</style>
+<style>
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .form-row label {
+    width: 150px;
+    font-weight: bold;
+    margin-right: 10px;
+    text-align: right;
+  }
+  .form-row input {
+    flex: 1;
+    padding: 6px;
+  }
+  .logo {
+    height: 60px;
+    margin-bottom: 10px;
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+
+    body {
+      margin: 0;
+      font-size: 12pt;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+    }
+
+    .form-row input {
+      border: none;
+      outline: none;
+    }
+
+    .print-header {
+      text-align: center;
+      border-bottom: 2px solid #000;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+
+<div id="printArea">
+  <div class="print-header">
+    <img src="{% static 'img/account/flower.jpg' %}" alt="Logo" class="logo">
+    <h2>Company Info Print</h2>     
+    <h3>User: {{ user_name }}</h3>
+    <!-- অন্যান্য হেডার এলিমেন্ট -->
+  
+    <p>Date: <span id="printDate"></span></p>
+</div>
+
+<div class="container mt-4" >
+    <h2>Company Information Records</h2>
+
+    {% if comp_list %}
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>                
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for tn in comp_list %}
+            <tr>
+                <td>{{ tn.com_id }}</td>
+                <td>{{ tn.company_name }}</td>
+                <td>{{ tn.company_email }}</td>                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-warning">No Data in table</div>
+    {% endif %}
+</div>
+</div>
+
+<button type="button" class="btn btn-secondary" onclick="window.print()">Print</button>
+
+<button onclick="printDiv('printArea')" class="btn btn-secondary">Print</button>
+<script>
+  function printDiv(divId) {
+    document.getElementById("printDate").innerText = new Date().toLocaleDateString();
+    
+    var printContents = document.getElementById(divId).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    location.reload(); // পেজ রিফ্রেশ করে আগের অবস্থায় ফিরিয়ে আনে
+  }
+</script>
+
+
+ {% endblock content %}

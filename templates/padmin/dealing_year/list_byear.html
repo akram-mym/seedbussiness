@@ -1,0 +1,35 @@
+{% extends 'padmin/base1.html' %}
+{% block content %}
+<h2>Dealing Year List</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Session</th>
+      <th>Status</th>
+      <th>Company</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for y in years %}
+    <tr>
+      <td>{{ y.dysl }}</td>
+      <td>{{ y.dy_session }}</td>
+      <td>{{ y.busy_status|yesno:"ON,OFF" }}</td>
+      <td>{{ y.com_id }}</td>
+      <td>
+        <a href="{% url 'ProjectAdmin:edit_dealing_year' y.dy_session %}" class="btn btn-sm btn-primary">Edit</a>
+        <a href="{% url 'ProjectAdmin:delete_dealing_year' y.dy_session %}" class="btn btn-sm btn-danger">Delete</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5" class="text-center">No records found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'ProjectAdmin:add_dealing_year' %}" class="btn btn-success">Add New</a>
+{% endblock %}

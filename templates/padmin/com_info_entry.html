@@ -1,0 +1,86 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %} Company Info Entry  {% endblock title  %}
+
+{% block alert %}This is  Company Info Entry.  {% endblock alert  %}
+
+{% block content %} 
+<center><h2>Company Entry</h2></center>
+<style>
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .form-row label {
+    width: 150px;       /* লেবেলের জন্য ফিক্সড জায়গা */
+    margin-right: 10px; /* ইনপুটের পাশে স্পেস */
+    text-align: right;
+    font-weight: bold;
+  }
+  .form-row input, 
+  .form-row select, 
+  .form-row textarea {
+    flex: 1;            /* ইনপুট পুরো বাকি জায়গা নেবে */
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .errorlist {
+    color: red;
+    margin-left: 160px; /* লেবেলের জায়গায় একটু ম্যার্জ দিয়ে নিচে দেখানো */
+    margin-top: 2px;
+    list-style: none;
+    padding-left: 0;
+  }
+</style>
+
+{% if update %}
+  <h2>Update Company Info</h2>
+{% else %}
+  <h2>New Company Entry</h2>
+{% endif %}
+
+<form method="POST">
+  {% csrf_token %}
+  {% for field in form %}
+    <div class="form-row">
+      <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+    </div>
+
+    {% if field.errors %}
+      <ul class="errorlist">
+        {% for error in field.errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %} 
+
+
+  <button type="submit" class="btn btn-primary">
+    {% if update %} Update {% else %} Save {% endif %}
+  </button>
+
+
+
+</form>
+
+
+
+<!-- ফর্ম এর validation error দেখানোর জন্য -->
+{% if form.errors %}
+  <ul>
+    {% for field in form %}
+      {% for error in field.errors %}
+        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+      {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% endblock content %}

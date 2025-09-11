@@ -1,0 +1,51 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %} Company Info Search  {% endblock title  %}
+
+{% block alert %}This is  Company Info Search.  {% endblock alert  %}
+
+{% block content %} 
+
+
+
+<div class="container mt-5">
+    <h2 class="mb-4">Search Company Info</h2>
+
+    <form method="get" class="d-flex mb-4" role="search">
+        <input
+            class="form-control me-2"
+            type="search"
+            name="q"
+            placeholder="Enter company name or email"
+            aria-label="Search"
+            value="{{ query }}"
+        />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
+    {% if company %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for c in company %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ c.company_name }}</h5>
+                            <p class="card-text">
+                                <a href="mailto:{{ c.company_email }}">{{ c.company_email }}</a>
+                            </p>
+                        </div>
+                        <div class="card-footer text-muted">
+                            ID: {{ c.com_id }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No results found.
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}

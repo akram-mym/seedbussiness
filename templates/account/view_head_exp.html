@@ -1,0 +1,21 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}HeadExp দেখুন{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr><th>Head Name</th><th>Head Code</th></tr>
+    </thead>
+    <tbody>
+        {% for head in heads %}
+        <tr>            
+            <td>{{ head.head_code }}</td>
+            <td>{{ head.head_name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <a href="{% url 'account:insert_head_exp' %}">ফিরে যান</a>
+
+{% endblock %}

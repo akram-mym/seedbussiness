@@ -1,0 +1,102 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %} Advance info  {% endblock title  %}
+
+ {% block alert %}This is Advance Info Page   {% endblock alert  %}
+
+{% block content %}
+<style>
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .form-row label {
+    width: 150px;
+    margin-right: 10px;
+    text-align: right;
+    font-weight: bold;
+  }
+  .form-row input, 
+  .form-row select, 
+  .form-row textarea {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .errorlist {
+    color: red;
+    margin-left: 160px;
+    margin-top: 2px;
+    list-style: none;
+    padding-left: 0;
+  }
+  .logo {
+    height: 60px;
+    width: auto;
+  }
+  h1{
+     text-align: center;
+  }
+  table {
+    margin: 0 auto;       /* টেবিলকে সেন্টারে রাখবে */
+    font-size: 12px;
+    max-width: 600px;
+    width: 70%;
+  }
+  table td, table th {
+    padding: 4px 8px;
+  }
+</style>
+
+<h1>All Advance Entries</h1>
+
+{% if advances %}
+<table class="table table-sm bordered table-striped mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>SL</th>
+            <th>Date</th>
+            <th>Receiver</th>
+            <th>Amount tk</th>   
+            <th>In Brief</th> 
+            <th>Entrier</th> 
+            <th>Action</th>              
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+    {% for adv in advances %}
+        <tr>
+            <td>{{ adv.id }}</td>
+            <td>{{ adv.date }}</td>
+            <td>{{ adv.receiver }}</td>
+            <td>{{ adv.amount }}</td>   
+            <td>{{ adv.abrief }}</td> 
+            <td>{{ adv.entrier }}</td>
+            {% load tz %}
+            {% now "Y-m-d" as today %}
+            <td>
+                 {% if adv.date|date:"Y-m-d" == today %}
+                    <!-- Disable Edit if date is today -->
+                    <a href="#" class="btn btn-sm btn-warning disabled" aria-disabled="true" data-bs-toggle="tooltip" title="Cannot edit today's entry">Edit</a>
+                {% else %}
+                    <!-- Enable Edit for other dates -->
+                    <a href="{% url 'account:advance_edit' adv.id %}" class="btn btn-sm btn-warning">Edit</a>
+                {% endif %}
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="7" class="text-center">No advance entries found.</td>
+        </tr>
+    {% endfor %}
+</tbody>
+
+</table>
+{% else %}
+    <p>No advance entries found.</p>
+{% endif %}
+
+{% endblock content %}

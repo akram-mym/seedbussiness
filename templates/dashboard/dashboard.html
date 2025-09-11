@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Company Dashboard</h1>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="{% url 'account:account' %}" class="btn btn-primary w-100">Account</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'ProjectAdmin:padmin' %}" class="btn btn-success w-100">Admin</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'block:block' %}" class="btn btn-success w-100">Production Block</a>
+        </div>
+        <div class="col-md-3">
+            <a href="{% url 'contract_grower:homepage' %}" class="btn btn-danger w-100">Contract Grower</a>
+        </div>
+        
+    </div>
+</div>
+</body>
+</html>

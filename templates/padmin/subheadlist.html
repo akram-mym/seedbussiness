@@ -1,0 +1,43 @@
+{% extends 'padmin/base1.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>SubHead List</h2>
+    <a href="{% url 'ProjectAdmin:subheadadd' %}" class="btn btn-success mb-3">Add New SubHead</a>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Head Code</th>
+                <th>Sub Code</th>
+                <th>Subhead Name</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subhead in subheads %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ subhead.sub_hcode }}</td>
+                <td>{{ subhead.sub_code }}</td>
+                <td>{{ subhead.subhead_name }}</td>
+                <td>
+                    <a href="{% url 'ProjectAdmin:subheadedit' subhead.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}                        
+                        <a href="{% url 'ProjectAdmin:subheaddelete' subhead.pk %}" class="btn btn-danger">Delete</a>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No SubHead entries found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

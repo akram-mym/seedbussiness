@@ -1,0 +1,58 @@
+{% extends 'padmin/base1.html' %}
+{% block title %} User List {% endblock title %}
+{% block alert %}This is User List.{% endblock alert %}
+
+{% block content %} 
+<div class="container mt-4">
+  <h2>User Profiles List</h2>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Emp ID</th>
+        <th>Status</th>
+        <th>Allowed App</th>
+        <th>B year</th>
+        <th>Company</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for profile in profiles %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ profile.user.username }}</td>
+          <td>{{ profile.employee_id|default:"N/A" }}</td>
+          <td>{{ profile.status }}</td>
+          <td>{{ profile.allowed_app }}</td>
+          <td>{{ profile.byear }}</td>
+          <td>{{ profile.com_id }}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <!-- View button -->
+              <a href="{% url 'ProjectAdmin:userprofile_view' profile.pk %}" class="btn btn-info btn-sm">View</a>
+
+              <!-- Edit button -->
+              <a href="{% url 'ProjectAdmin:userprofile_edit' profile.pk %}" class="btn btn-primary btn-sm">Edit</a>
+
+              <!-- Delete button -->
+              <form method="post" action="{% url 'ProjectAdmin:userprofile_delete' profile.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Are you sure you want to delete this user profile?');">
+                  Delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="8">No user profiles found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

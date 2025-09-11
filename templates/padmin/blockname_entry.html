@@ -1,0 +1,21 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %}Block Entry Info{% endblock title %}
+
+{% block alert %}Block Name Entry Info{% endblock alert %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>নতুন ব্লকের তথ্য দিন</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+    </form>
+</div>
+<br><br><br>
+<hr>
+<a href="{% url 'ProjectAdmin:blockname_list'  %}"> Block Info </a>
+<hr>
+{% endblock content  %}

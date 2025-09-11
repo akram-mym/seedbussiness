@@ -1,0 +1,103 @@
+{% extends 'block/base_block.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if person %}Edit{% else %}Add{% endif %} Person</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Category / Catagory Short -->
+        <!-- <div class="mb-3">
+            <label for="{{ form.catagory_short.id_for_label }}">Category</label>
+            {{ form.catagory_short }}
+            {% if form.catagory_short.errors %}
+                <div class="text-danger">{{ form.catagory_short.errors }}</div>
+            {% endif %}
+        </div> -->
+
+        <!-- Person ID (readonly) -->
+        {% if person %}
+        <div class="mb-3">
+            <label>Person ID</label>
+            <input type="text" class="form-control" value="{{ person.person_id }}" readonly>
+        </div>
+        {% endif %}
+
+        <!-- NID Number -->
+        <div class="mb-3">
+            <label for="{{ form.nid_no.id_for_label }}">NID Number</label>
+            {{ form.nid_no }}
+            {% if form.nid_no.errors %}
+                <div class="text-danger">{{ form.nid_no.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- First & Last Name -->
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="text-danger">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Father's Name -->
+        <div class="mb-3">
+            <label for="{{ form.father_name.id_for_label }}">Father's Name</label>
+            {{ form.father_name }}
+            {% if form.father_name.errors %}
+                <div class="text-danger">{{ form.father_name.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="mb-3">
+            <label for="{{ form.mobile_no.id_for_label }}">Mobile Number</label>
+            {{ form.mobile_no }}
+            {% if form.mobile_no.errors %}
+                <div class="text-danger">{{ form.mobile_no.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Address -->
+        <div class="mb-3">
+            <label for="{{ form.address.id_for_label }}">Address</label>
+            {{ form.address }}
+            {% if form.address.errors %}
+                <div class="text-danger">{{ form.address.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Person Picture -->
+        <div class="mb-3">
+            <label for="{{ form.person_picture.id_for_label }}">Person Picture</label>
+            {{ form.person_picture }}
+            {% if form.person_picture.errors %}
+                <div class="text-danger">{{ form.person_picture.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- NID Picture -->
+        <div class="mb-3">
+            <label for="{{ form.person_nid_picture.id_for_label }}">NID Picture</label>
+            {{ form.person_nid_picture }}
+            {% if form.person_nid_picture.errors %}
+                <div class="text-danger">{{ form.person_nid_picture.errors }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{% if person %}Update{% else %}Create{% endif %}</button>
+        <a href="{% url 'block:person_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

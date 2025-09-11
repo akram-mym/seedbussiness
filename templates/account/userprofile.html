@@ -1,0 +1,75 @@
+{% extends 'common_code/base_ac.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow rounded">
+        <div class="card-header bg-primary text-white">
+            <h4>User Profile</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered align-middle">
+                <tr>
+                    <th>Username</th>
+                    <td>{{ profile.user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Company</th>
+                    <td>{{ profile.com_id.company_name|default:"No Company" }}</td>
+                </tr>
+                <tr>
+                    <th>Block</th>
+                    <td>{{ profile.block_id.b_id|default:"No Block" }}
+                        ({{ profile.block_id.b_name|default:"No Block" }})
+                    </td>
+                </tr>
+                <tr>
+                    <th>Dealing Year</th>
+                    <td>{{ profile.byear|default:"No Year" }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ profile.status }}</td>
+                </tr>
+                <tr>
+                    <th>Allowed App</th>
+                    <td>{{ profile.get_allowed_app_display }}</td>
+                </tr>                
+                {% if profile.employee_id %}
+                <tr>
+                    <th>Employee ID</th>
+                    <td>{{ profile.employee_id.EmpId }}</td>
+                </tr>
+                <tr>
+                    <th>Employee</th>
+                    <td>
+                        {{ profile.employee_id.EmpName }} <br>
+                        {{ profile.employee_id.EmpEmail }} <br>
+                        {{ profile.employee_id.EmpMobile }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Picture</th>
+                    <td>
+                        {% if profile.employee_id.EmpPicture %}
+                            <img src="{{ profile.employee_id.EmpPicture.url }}" 
+                                 alt="Employee Picture" 
+                                 class="img-thumbnail" width="120">
+                        {% else %}
+                            <img src="{% static 'images/no_picture.png' %}" 
+                                 alt="No Picture" 
+                                 class="img-thumbnail" width="120">
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <th>Employee</th>
+                    <td>No Employee Assigned</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

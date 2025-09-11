@@ -1,0 +1,43 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Block Info{% endblock title %}
+
+{% block alert %}Block name Info{% endblock alert %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 style="text-align: center;">Block Information Records</h2>
+
+    {% if block_list %}
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+            <tr>
+                <th>Block ID</th>
+                <th>Block Name</th>
+                <th>Land AC</th>
+                <th>Description</th>
+                <th>State</th>
+                <th>Division</th>
+                <th>Company</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for tn in block_list %}
+            <tr>
+                <td>{{ tn.b_id }}</td>
+                <td>{{ tn.b_name }} </td>
+                <td>{{ tn.b_land_Ac }}</td>
+                <td>{{ tn.b_des }}</td>
+                <td>{{ tn.state }}</td>
+                <td>{{ tn.division }}</td>
+                <td>{{ tn.com_id.company_name }} ( {{ tn.com_id.company_email  }} )</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="alert alert-warning">No Data in table</div>
+    {% endif %}
+</div>
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+{% else %}
+    <p>Welcome, Guest!</p>
+{% endif %}
+
+<div>
+    {% block content %} 
+    <p> Login </p>
+    
+    {% endblock content %}
+</div>

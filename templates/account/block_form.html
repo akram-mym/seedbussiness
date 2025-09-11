@@ -1,0 +1,106 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Block Entry{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Block Entry Form</h2>
+
+    <form method="POST" class="row g-3 needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="col-md-6">
+            <label for="com_id" class="form-label">Company ID</label>
+            <input type="text" class="form-control" id="com_id" name="com_id" maxlength="10" required>
+            <div class="invalid-feedback">Please enter the Company ID.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="b_id" class="form-label">Block ID</label>
+            <input type="text" class="form-control" id="b_id" name="b_id" maxlength="10" required>
+            <div class="invalid-feedback">Please enter the Block ID.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="b_name" class="form-label">Block Name</label>
+            <input type="text" class="form-control" id="b_name" name="b_name" maxlength="100" required>
+            <div class="invalid-feedback">Please enter the Block Name.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="b_land_Ac" class="form-label">Land AC</label>
+            <input type="number" step="0.01" class="form-control" id="b_land_Ac" name="b_land_Ac" required>
+            <div class="invalid-feedback">Please provide a valid Land AC value.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="PerDecimal" class="form-label">Per Decimal</label>
+            <input type="number" step="0.01" class="form-control" id="PerDecimal" name="PerDecimal" required>
+            <div class="invalid-feedback">Please provide the Per Decimal value.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="b_des" class="form-label">Block Description</label>
+            <input type="text" class="form-control" id="b_des" name="b_des" maxlength="100" required>
+            <div class="invalid-feedback">Please enter a Block Description.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="bso_email" class="form-label">BSO Email</label>
+            <input type="email" class="form-control" id="bso_email" name="bso_email" maxlength="40" required>
+            <div class="invalid-feedback">Please enter a valid BSO Email.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" maxlength="20" required>
+            <div class="invalid-feedback">Please enter the State.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="rlpay_day" class="form-label">RL Pay Day</label>
+            <input type="text" class="form-control" id="rlpay_day" name="rlpay_day" maxlength="20" required>
+            <div class="invalid-feedback">Please enter the RL Pay Day.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="land_update" class="form-label">Land Update</label>
+            <input type="number" step="0.01" class="form-control" id="land_update" name="land_update" required>
+            <div class="invalid-feedback">Please provide a valid Land Update value.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="division" class="form-label">Division</label>
+            <input type="text" class="form-control" id="division" name="division" maxlength="20" required>
+            <div class="invalid-feedback">Please enter the Division.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label for="emailst" class="form-label">Email ST</label>
+            <input type="email" class="form-control" id="emailst" name="emailst" maxlength="40" required>
+            <div class="invalid-feedback">Please enter a valid Email ST.</div>
+        </div>
+
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap validation script -->
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+{% endblock content %}

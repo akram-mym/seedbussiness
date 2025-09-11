@@ -1,0 +1,119 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Common Expense Report{% endblock title %}
+
+{% block alert %}এটি Common Expense Report পৃষ্ঠা{% endblock alert %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Common Expense Report</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>তারিখ</th>
+                        <th>সাবজেক্ট কোড</th>
+                        <th>খরচ</th>
+                        <th>বিবরণ</th>                      
+                        
+                        <th>ExpanBy</th>
+                        <th>Entrier</th>
+                        <th>মাস</th>                        
+                        <th>স্ট্যাটাস</th>  
+                        <th>dy</th>
+                        <th>ছবি</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exp in expenses %}
+                    <tr>
+                        <td>{{ exp.e_id }}</td>
+                        <td>{{ exp.e_day }}</td>
+                        <td>{{ exp.esubcode }}</td>
+                        <td>{{ exp.ex_cost }}</td>
+                        <td>{{ exp.EDescribe }}</td>
+                        
+                        <td>{{ exp.ExpdBy.EmpName }}</td>
+                        <td>{{ exp.myuser }}</td>                      
+                        <td>{{ exp.mm }}</td>                        
+                        <td>{{ exp.status }}</td>   
+                        <td>{{ exp.dy }}</td>                                   
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="12" class="text-center text-muted">কোনো খরচের রেকর্ড পাওয়া যায়নি।</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br/><br/><br/> 
+<a href="{% url 'account:insert_common_exp' %}">নতুন খরচ যোগ করুন</a>
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0">Common Expense Report@Subcode</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Subcode</th>
+                        <th>Total</th>                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in expenses_by_subcode %}
+                    <tr>
+                        <td>{{ row.esubcode }}</td>
+                        <td>{{ row.total_cost }}</td>                        
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">কোনো ডাটা পাওয়া যায়নি।</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<h2>Expense Summary by Subcode</h2>
+<canvas id="expenseChart" width="200" height="100"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('expenseChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels|safe }},
+            datasets: [{
+                label: 'Total Cost',
+                data: {{ totals|safe }},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: 'Expenses by Subcode' }
+            },
+            scales: { x: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock content %}

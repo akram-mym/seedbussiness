@@ -1,0 +1,17 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %}Catagory Update Info{% endblock title %}
+
+{% block alert %}Catagory Name Update Info{% endblock alert %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Category</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'ProjectAdmin:catagory_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+superuser: Akram
+email: saf72akram@gmail.com
+password : Akram2004
+
+
+Username: Rabbi
+password : Rabbi12345678
+
+Username: Ruhul
+password : R12345678
+
+Username: AC
+password : AC12345678
+
+Username: Zooka
+password : Z12345678
+
+Username: PM
+password : P12345678
+
+
+Username: Lysa
+password : Lysa2004

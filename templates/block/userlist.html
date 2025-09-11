@@ -1,0 +1,49 @@
+{% extends 'block/base_block.html' %}
+
+{% block title %}Block Info{% endblock title %}
+{% block alert %}Block User Info{% endblock alert %}
+
+{% block content %} 
+<div class="container mt-4">
+  <p>Profiles count: {{ profiles|length }}</p>
+
+  <h2>User Profiles List</h2>
+
+  <table class="table table-bordered table-striped align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Username</th>
+        <th>Emp ID</th>
+        <th>Status</th>
+        <th>Block </th>
+        
+        <th>Allowed App</th>
+        <th>B Year</th>
+        <th>Company</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      {% for profile in profiles %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ profile.user.username }}</td>
+          <td>{{ profile.employee_id|default:"N/A" }}</td>
+          <td>{{ profile.get_status_display }}</td>
+          <td>{{ profile.block_id.b_name|default:"N/A" }}
+              ({{ profile.block_id.b_id|default:"N/A" }})</td>
+          <td>{{ profile.get_allowed_app_display }}</td>
+          <td>{{ profile.byear.year|default:"N/A" }}</td>
+          <td>{{ profile.com_id.company_name|default:"N/A" }}</td>
+          
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="10" class="text-center">No user profiles found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

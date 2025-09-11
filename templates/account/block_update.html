@@ -1,0 +1,62 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Success{% endblock title %}
+{% block content %}
+
+
+
+<style>
+        body {
+            background-color: #f4f9ff;
+        }
+        .custom-form-bg {
+            background-color: #e6f7ff;
+        }
+        .form-container {
+            max-width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5 form-container">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Update Block</h2>
+        </div>
+        <div class="card-body custom-form-bg">
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <table class="table table-borderless">
+                    <tbody>
+                        {% for field in form %}
+                        <tr>
+                            <td class="text-end align-middle" style="width: 30%;">
+                                <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            </td>
+                            <td>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ field.errors|striptags }}
+                                    </div>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success px-4 me-2">Update</button>
+                    <a href="{% url 'account:block_info' %}" class="btn btn-secondary px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+ <br/><br/><br/> 
+{% endblock content %}

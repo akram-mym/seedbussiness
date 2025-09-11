@@ -1,0 +1,18 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Block Entry Info{% endblock title %}
+
+{% block alert %}Block Name Entry Info{% endblock alert %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>নতুন ব্লকের তথ্য দিন</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">সংরক্ষণ করুন</button>
+    </form>
+</div>
+
+{% endblock content  %}

@@ -1,0 +1,3 @@
+*args দিয়ে আপনি একটি ফাংশনে যত খুশি সংখ্যক positional arguments পাঠাতে পারেন।
+
+**kwargs দিয়ে আপনি একটি ফাংশনে যত খুশি সংখ্যক keyword arguments পাঠাতে পারেন (মানে key=value আকারে)।

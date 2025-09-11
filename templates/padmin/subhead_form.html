@@ -1,0 +1,38 @@
+{% extends 'padmin/base1.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit SubHead</h2>
+    <form method="post">
+        {% csrf_token %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Edit</th>
+                    <th>Current Value (Read-only)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Head Code</td>
+                    <td>{{ form.sub_hcode }}</td>
+                    <td>{{ subhead.sub_hcode }}</td>
+                </tr>
+                <tr>
+                    <td>Sub Code</td>
+                    <td>{{ form.sub_code }}</td>
+                    <td>{{ subhead.sub_code }}</td>
+                </tr>
+                <tr>
+                    <td>Subhead Name</td>
+                    <td>{{ form.subhead_name }}</td>
+                    <td>{{ subhead.subhead_name }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'ProjectAdmin:subheadlist' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

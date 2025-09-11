@@ -1,0 +1,9 @@
+{% extends 'block/base_block.html' %}
+
+{% block title %}Success{% endblock title %}
+{% block content %}
+  <h2>✅ Advance info saved successfully!</h2>
+
+  
+  <a href="{% url 'block:advance_insert' %}">Add Another Advance Info</a>
+{% endblock content %}

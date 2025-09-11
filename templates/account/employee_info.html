@@ -1,0 +1,270 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}EmployeeInfoEntry{% endblock title %}
+{% block alert %}This is  Employee Info Entry.  {% endblock alert  %}
+
+{% block content %}
+
+<Style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.form-row label {
+    width: 150px;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-row input,
+.form-row select {
+    width: 30%;       /* sets width to 10% of the parent */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/* Buttons */
+.btn {
+    margin-top: 15px;
+    padding: 8px 14px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn-delete {
+    background-color: #f44336;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Small Image Preview */
+.icon-small {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.form-row-vertical {
+    display: block;
+    margin-bottom: 12px;
+}
+
+.form-row-vertical label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-row-vertical input,
+.form-row-vertical select {
+    width: auto; /* or 100% if you want full width */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.btn-delete {
+    background-color: #f44336;
+}
+
+.btn-delete:hover {
+    background-color: #d32f2f;
+}
+</Style>
+
+
+
+
+<h1>Employee Information</h1>
+
+<!-- Create / Update Form -->
+<form method="post" enctype="multipart/form-data" action="{{ action_url }}">
+
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div class="form-row">
+        <label for="id_EmpId">Employee ID</label>
+        {{ form.EmpId }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpName">Name</label>
+        {{ form.EmpName }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpDesig">Designation</label>
+        {{ form.EmpDesig }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpMobile">Mobile</label>
+        {{ form.EmpMobile }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpEmail">Email</label>
+        {{ form.EmpEmail }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpBirthDate">Birth Date</label>
+        {{ form.EmpBirthDate }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpJoininghDate">Joining Date</label>
+        {{ form.EmpJoininghDate }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpDiv">Division</label>
+        {{ form.EmpDiv }}
+    </div>
+
+    <div class="form-row-vertical">
+    <label for="id_EmpPicture">Picture</label>
+    {{ form.EmpPicture }}
+    </div>
+
+    <div class="form-row">
+        <label for="id_EmpStatus">Status</label>
+        {{ form.EmpStatus }}
+    </div>   
+    <div class="form-row">
+    <label for="id_EmpComId">Company</label>
+    <p>{{ form.instance.EmpComId }}</p>
+    {{ form.EmpComId }}
+</div> 
+
+
+    <button type="submit" class="btn">{{ submit_text }}</button>
+</form>
+
+
+<!-- Employee List Table -->
+<table>
+    <thead>
+        <tr>
+            <th>EmpId</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Birth Date</th>
+            <th>Joining Date</th>
+            <th>Division</th>
+            <th>Picture</th>
+            <th>Status</th>                      
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for emp in employees %}
+        <tr>
+            <td>{{ emp.EmpId }}</td>
+            <td>{{ emp.EmpName }}</td>
+            <td>{{ emp.EmpDesig }}</td>
+            <td>{{ emp.EmpMobile }}</td>
+            <td>{{ emp.EmpEmail }}</td>
+            <td>{{ emp.EmpBirthDate }}</td>
+            <td>{{ emp.EmpJoininghDate }}</td>
+            <td>{{ emp.EmpDiv }}</td>
+            <td>
+                {% if emp.EmpPicture %}
+                    <img src="{{ emp.EmpPicture.url }}" class="icon-small" alt="Emp Picture" >
+                {% else %}
+                    No Image
+                {% endif %}
+            </td>
+            <td>{{ emp.EmpStatus }}</td>
+            <td>
+                <!-- Edit Button -->
+                <a href="{% url 'account:employee_update' emp.EmpId %}" 
+                class="btn" 
+                style="text-decoration: none; color: white;">
+                    Edit
+                </a>
+                |
+                <!-- Delete Button -->
+                <form method="post" action="{% url 'account:employee_delete' emp.EmpId %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" 
+                            class="btn btn-delete btn-sm" 
+                            onclick="return confirm('Are you sure?');">
+                        Delete
+                    </button>
+                </form>
+            </td>
+
+
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="12">No employees found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'padmin/base1.html' %}
+
+{% block title %}Catagory Delete Info{% endblock title %}
+
+{% block alert %}Catagory Name delete Info{% endblock alert %}
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Delete Category</h2>
+    <p>Are you sure you want to delete <strong>{{ catagory.catagoryName }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'ProjectAdmin:catagory_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

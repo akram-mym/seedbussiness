@@ -1,0 +1,12 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}HeadExp আপডেট করুন{% endblock %}
+
+{% block content %}
+<h2>{{ head.head_name }} আপডেট করুন</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+{% endblock %}

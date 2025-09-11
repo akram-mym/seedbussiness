@@ -1,0 +1,10 @@
+
+{% extends 'common_code/base_ac.html' %}
+
+{% block title %}Success{% endblock title %}
+{% block content %}
+  <h2>✅ Company info saved successfully!</h2>
+
+  
+  <a href="{% url 'company_entry' %}">Add Another Company Info</a>
+{% endblock content %}

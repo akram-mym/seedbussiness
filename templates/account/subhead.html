@@ -1,0 +1,30 @@
+{% extends 'common_code/base_ac.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h4>Create SubHead</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_sub_hcode" class="form-label">Head Expense</label>
+                    {{ form.sub_hcode }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_sub_code" class="form-label">Sub Code</label>
+                    {{ form.sub_code }}
+                </div>
+                <div class="mb-3">
+                    <label for="id_subhead_name" class="form-label">Subhead Name</label>
+                    {{ form.subhead_name }}
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                <a href="{% url 'account:subhead' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

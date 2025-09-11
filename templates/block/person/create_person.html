@@ -1,0 +1,120 @@
+{% extends 'block/base_block.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if person %}Edit{% else %}Add{% endif %} Person</h2>
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Catagory Short -->
+        <div class="mb-3">
+            <label for="{{ form.catagory_short.id_for_label }}">Category</label>
+            {{ form.catagory_short }}
+            {% if form.catagory_short.errors %}
+                <div class="text-danger">{{ form.catagory_short.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.nid_no.id_for_label }}">NID Number</label>
+                {{ form.nid_no }}
+                {% if form.nid_no.errors %}
+                    <div class="text-danger">{{ form.nid_no.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="text-danger">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6 mb-3">
+                <label for="{{ form.father_name.id_for_label }}">Father's Name</label>
+                {{ form.father_name }}
+                {% if form.father_name.errors %}
+                    <div class="text-danger">{{ form.father_name.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.mobile_no.id_for_label }}">Mobile Number</label>
+            {{ form.mobile_no }}
+            {% if form.mobile_no.errors %}
+                <div class="text-danger">{{ form.mobile_no.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.address.id_for_label }}">Address</label>
+            {{ form.address }}
+            {% if form.address.errors %}
+                <div class="text-danger">{{ form.address.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.person_picture.id_for_label }}">Person Picture</label>
+            {{ form.person_picture }}
+
+            {% if form.instance.person_picture %}
+                <div class="mt-2">
+                    <img src="{{ form.instance.person_picture.url }}" alt="Person Picture" width="150">
+                </div>
+            {% else %}
+                <p class="text-muted mt-2">📷 কোনো Person ছবি আপলোড করা নেই</p>
+                {# ডিফল্ট ইমেজ দেখাতে চাইলে নিচের লাইন আনকমেন্ট করুন #}
+                {# <img src="{% static 'images/default-person.png' %}" alt="Default Person Picture" width="150"> #}
+            {% endif %}
+
+            {% if form.person_picture.errors %}
+                <div class="text-danger">{{ form.person_picture.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="mb-3">
+            <label for="{{ form.person_nid_picture.id_for_label }}">NID Picture</label>
+            {{ form.person_nid_picture }}
+
+            {# যদি ছবি আগে থেকে থাকে তাহলে দেখাও #}
+            {% if form.instance.person_nid_picture %}
+                <div class="mt-2">
+                    <img src="{{ form.instance.person_nid_picture.url }}" alt="NID Picture" width="150">
+                </div>
+            {% else %}
+                <p class="text-muted mt-2">📷 কোনো ছবি আপলোড করা নেই</p>
+            {% endif %}
+
+            {% if form.person_nid_picture.errors %}
+                <div class="text-danger">{{ form.person_nid_picture.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            {% if person %}Update{% else %}Create{% endif %}
+        </button>
+        <a href="{% url 'block:person_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

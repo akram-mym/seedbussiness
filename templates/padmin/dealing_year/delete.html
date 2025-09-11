@@ -1,0 +1,12 @@
+{% extends 'padmin/base1.html' %}
+
+{% block content %}
+<h3>ডিলিট নিশ্চিত করুন</h3>
+<p>আপনি কি নিশ্চিতভাবে <strong>{{ year.dy_session }}</strong> ডিলিট করতে চান?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">হ্যাঁ, ডিলিট করুন</button>
+  <a href="{% url 'ProjectAdmin:dealing_year_list' %}" class="btn btn-secondary">বাতিল</a>
+</form>
+{% endblock %}

@@ -1,0 +1,78 @@
+
+{% extends 'block/base_block.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Advance{% else %}New Advance{% endif %}{% endblock title %}
+
+{% block alert %}{% if form.instance.pk %}Edit Advance Entry{% else %}Add New Advance{% endif %}{% endblock alert %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% if form.instance.pk %}Edit Advance{% else %}New Advance{% endif %}</h2>
+
+    <!-- Display success / error messages -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Date field -->
+        <div class="mb-3">
+            {{ form.date.label_tag }}
+            {{ form.date }}
+            {% if form.date.errors %}
+              <div class="text-danger">{{ form.date.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Amount field -->
+        <div class="mb-3">
+            {{ form.amount.label_tag }}
+            {{ form.amount }}
+            {% if form.amount.errors %}
+              <div class="text-danger">{{ form.amount.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Description / Abrief -->
+        <div class="mb-3">
+            {{ form.abrief.label_tag }}
+            {{ form.abrief }}
+            {% if form.abrief.errors %}
+              <div class="text-danger">{{ form.abrief.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Target File -->
+        <div class="mb-3">
+            {{ form.target_file.label_tag }}
+            {{ form.target_file }}
+            {% if form.target_file.errors %}
+              <div class="text-danger">{{ form.target_file.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Hidden Receiver field -->
+        {{ form.receiver }}
+
+        <button type="submit" class="btn btn-primary">
+            {% if form.instance.pk %}Update{% else %}Submit{% endif %}
+        </button>
+        <a href="{% url 'account:advance_info' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}
