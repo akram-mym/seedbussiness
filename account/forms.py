@@ -1,19 +1,10 @@
 from django import forms
-from ProjectAdmin.models import Employee
-from account.models import  Employee, BlockName, Company,BlockName,CommonExp, Company, HeadExp,Advance, SubHead, UserProfile  # ✅ Import BlockName from current app
-from .models import SubHead
+from ProjectAdmin.models import Employee,Company
+from account.models import  Employee, BlockName, BlockName,CommonExp,  HeadExp,Advance, SubHead, UserProfile  # ✅ Import BlockName from current app
 
 
-class CompanyInfoEntry(forms.ModelForm):
-    class Meta:
-        model = Company
-        fields = ['com_id', 'company_name', 'company_email']
-        widgets = {
-            'com_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Company ID'}),
-            'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Company Name'}),
-            'company_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Company Email'}),
-            
-        }
+
+
 
 class BlockNameForm(forms.ModelForm):
     class Meta:
@@ -34,10 +25,10 @@ class BlockNameForm(forms.ModelForm):
             'com_id': forms.Select(attrs={'class': 'form-select'}),
         }
 
-def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filter to only active companies
-        self.fields['com_id'].queryset = Company.objects.filter(is_active=True).order_by('company_name')
+    def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            # Filter to only active companies
+            self.fields['com_id'].queryset = Company.objects.filter(is_active=True).order_by('Company_name')
         
 class BlockNameUpdateForm(forms.ModelForm):
     # কাস্টম ফিল্ড (ফর্মে দেখা যাবে, কিন্তু মডেলে নেই)
@@ -94,36 +85,10 @@ class EmployeeForm(forms.ModelForm):
     class Meta:
         model = Employee
         fields = '__all__'
-
+        exclude = ['EmpId']
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.pk:
-            # EmpId ফিল্ড readonly
-            self.fields['EmpId'].widget.attrs['readonly'] = True
-
-            # EmpComId কে hidden ইনপুট বানানো
-            self.fields['EmpComId'].widget = forms.HiddenInput()
-
-            # UI তে দেখানোর জন্য একটা নতুন ফিল্ড বা প্রপার্টি যোগ করতে পারেন
-            self.display_EmpComId = self.instance.EmpComId
-
-
-
-# class CommonExpForm(forms.ModelForm):
-#     class Meta:
-#         model = CommonExp
-#         fields = [
-#             'e_day', 'esubcode', 'ex_cost', 'EDescribe', 'ExpdBy', 'myuser',
-#             'mm', 'status', 'dy', 'com_id', 'pic'
-#         ]
-#         widgets = {
-#             'e_day': forms.DateInput(attrs={'type': 'date'}),
-#             'esubcode': forms.TextInput(attrs={'placeholder': 'Subject Code'}),
-#             'ex_cost': forms.NumberInput(attrs={'step': '0.01'}),
-#             'EDescribe': forms.Textarea(attrs={'rows': 3}),
-#             'status': forms.TextInput(attrs={'value': 'Pending'}),
-#         }
-
+    
 
 class CommonExpForm(forms.ModelForm):
     class Meta:
@@ -153,17 +118,6 @@ class HeadExpForm(forms.ModelForm):
     class Meta:
         model = HeadExp
         fields = ['head_code', 'head_name']
-
-
-# class HeadExpViewForm(forms.ModelForm):
-#     class Meta:
-#         model = HeadExp
-#         fields = ['head_code', 'head_name']
-
-#     def __init__(self, *args, **kwargs):
-#         super(HeadExpViewForm, self).__init__(*args, **kwargs)
-#         for field in self.fields.values():
-#             field.disabled = True  # make all fields read-only
 
 class HeadExpViewForm(forms.ModelForm):
     class Meta:

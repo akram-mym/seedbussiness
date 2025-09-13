@@ -1,30 +1,27 @@
 from django.contrib import admin
-from account.models import  BlockName, CommonExp, Company, HeadExp,Advance, UserProfile
+from account.models import  BlockName, CommonExp,  HeadExp,Advance, UserProfile
 from django.utils.html import format_html
 
 
 # Admin class for BlockName
 class BlockNameAdmin(admin.ModelAdmin):
     list_display = (
-        'id','b_id', 'b_name', 'b_land_Ac', 'PerDecimal', 'b_des', 
+        'b_id', 'b_name', 'b_land_Ac', 'PerDecimal', 'b_des', 
         'bso_email', 'state', 'rlpay_day', 'land_update', 
         'division', 'emailst', 'com_id'
     )
 
-# Admin class for Company
-class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('com_id', 'company_name', 'company_email','is_active')
 
 class HeadExpAdmin(admin.ModelAdmin):
     list_display = ('head_name', 'head_code')
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user','employee_id','byear','com_id','status', 'allowed_app')  # যেগুলো লিস্টে দেখাবে
+    list_display = ('user','employee_id','byear','com_id','status', 'allowed_app','block_id')  # যেগুলো লিস্টে দেখাবে
 
 
 # Register models with their respective admin classes
 admin.site.register(BlockName, BlockNameAdmin)
-admin.site.register(Company, CompanyAdmin)
+
 admin.site.register(HeadExp, HeadExpAdmin)
 admin.site.register(UserProfile,UserProfileAdmin)
 

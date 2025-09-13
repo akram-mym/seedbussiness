@@ -1,0 +1,39 @@
+{% extends 'block/base_block.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Seed Transport Records</h2>
+  <a href="{% url 'block:seed_transport_add' %}" class="btn btn-success mb-3">+ Add New</a>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Date</th>
+        <th>Chalan No</th>
+        <th>Seed Sent</th>
+        <th>Seed Received</th>
+        <th>Empty Bags</th>
+        <th>Variety</th>
+        <th>Driver</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.sending_date }}</td>
+        <td>{{ record.chalan_no }}</td>
+        <td>{{ record.seed_sent }}</td>
+        <td>{{ record.seed_received }}</td>
+        <td>{{ record.empty_bags }}</td>
+        <td>{{ record.variety_name }}</td>
+        <td>{{ record.driver_name }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7" class="text-center">No records found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

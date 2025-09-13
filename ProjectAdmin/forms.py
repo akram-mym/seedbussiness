@@ -1,8 +1,16 @@
 from django import forms
 
-from account.models import BlockName, Company
+from .models import Catagory, Company, DealingYear, Employee
 
-from .models import Catagory, DealingYear, Employee
+class CompanyInfoEntry(forms.ModelForm):
+    class Meta:
+        model = Company
+        fields = ['company_name', 'company_email']
+        widgets = {            
+            'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Company Name'}),
+            'company_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Enter Company Email'}),
+            
+        }
 
 class DealingYearForm(forms.ModelForm):
     class Meta:
@@ -21,8 +29,7 @@ class EmployeeInfoEntry(forms.ModelForm):
         model = Employee
         fields = [
             'EmpName', 'EmpDesig', 'EmpMobile', 'EmpEmail',
-            'EmpBirthDate', 'EmpJoininghDate', 'EmpDiv',
-            'EmpPicture'
+            'EmpBirthDate', 'EmpJoininghDate', 'EmpPicture','EmpComId'
         ]
         exclude = ['EmpId']  # ✅ EmpId ফর্মে দেখাবেন না, কারণ এটি অটো জেনারেটেড
 
@@ -43,40 +50,45 @@ class EmployeeInfoEntry(forms.ModelForm):
     def __init__(self, *args, **kwargs):
       super().__init__(*args, **kwargs)
 
-    # Set choices for EmpDiv
-      self.fields['EmpDiv'] = forms.ChoiceField(
-        choices=[
-            ('AC', 'Account (P+M)'),
-            ('SP', 'Seed Production'),
-            ('SM', 'Seed Marketing')
-        ],
-        widget=forms.Select(attrs={'class': 'form-control'}),
-    )
-
-    
-    # Hide EmpComId if it exists
-      if 'EmpComId' in self.fields: 
-       self.fields['EmpComId'].widget = forms.HiddenInput()
-    
+    # # Set choices for EmpDiv
+    #   self.fields['EmpDiv'] = forms.ChoiceField(
+    #     choices=[
+    #         ('AC', 'Account (P+M)'),
+    #         ('SP', 'Seed Production'),
+    #         ('SM', 'Seed Marketing')
+    #     ],
+    #     widget=forms.Select(attrs={'class': 'form-control'}),
+    # ) 
 
 
 
 class CatagoryForm(forms.ModelForm):
     class Meta:
         model = Catagory
-        fields = ['catagoryid', 'catagoryName','catagory_short', 'ComId']
+        fields = ['catagoryid', 'catagoryName', 'catagory_short', 'ComId']
         widgets = {
             'catagoryid': forms.TextInput(attrs={'class': 'form-control'}),
             'catagoryName': forms.TextInput(attrs={'class': 'form-control'}),
-            'catagoryshort': forms.TextInput(attrs={'class': 'form-control'}),
+            'catagory_short': forms.TextInput(attrs={'class': 'form-control'}),
             'ComId': forms.Select(attrs={'class': 'form-control'}),
         }
-    
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            # Update mode হলে catagory_short readonly করা
+            self.fields['catagory_short'].disabled = True
+
     def clean_catagoryName(self):
         name = self.cleaned_data['catagoryName'].title()  # Capitalized
-        if Catagory.objects.filter(catagoryName=name).exists():
+        qs = Catagory.objects.filter(catagoryName=name)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)  # exclude current instance
+        if qs.exists():
             raise forms.ValidationError("This category name already exists.")
         return name
+    
+
     
 from django import forms
 from account.models import UserProfile

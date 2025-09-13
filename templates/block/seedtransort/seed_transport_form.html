@@ -1,0 +1,18 @@
+{% extends 'block/base_block.html' %}
+
+{% block title %}Seed Transport Entry{% endblock title %}
+
+{% block alert %}Seed Transport Entry Form{% endblock alert %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h2>Add Seed Transport</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>  
+  <h2><a href="{% url 'block:seed_transport_list' %}">Seed Transport List</a></h2>
+</div>
+{% endblock %}

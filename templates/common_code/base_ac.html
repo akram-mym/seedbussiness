@@ -73,7 +73,11 @@
 <!-- Right side menu: login/logout -->
 <ul class="navbar-nav ms-auto">
     {% if user.is_authenticated %}
-        <img src="{{ user.userprofile.employee_id.EmpPicture.url| default:'No Picture' }}" class="icon-small" alt="Employee Picture" width="40">
+        {% if user.userprofile.employee_id.EmpPicture %}
+            <img src="{{ user.userprofile.employee_id.EmpPicture.url }}" class="icon-small" alt="Employee Picture" width="40">
+        {% else %}
+            <img src="{% static 'images/default.png' %}" class="icon-small" alt="No Picture" width="40">
+        {% endif %}
 
         <form method="post" action="{% url 'account:logout' %}">
             {% csrf_token %}
@@ -143,7 +147,11 @@
     {{ user.userprofile.block_id.b_id|default_if_none:"No Block" }} -
     {{ user.userprofile.byear|default_if_none:"No Year" }},(
     {{ user.userprofile.employee_id|default:"No Empid" }} )-
-    <img src="{{ user.userprofile.employee_id.EmpPicture.url| default:'No Picture' }}" class="icon-small" alt="Employee Picture" width="40">
+    {% if user.userprofile.employee_id.EmpPicture %}
+    <img src="{{ user.userprofile.employee_id.EmpPicture.url }}" class="icon-small" alt="Employee Picture" width="40">
+    {% else %}
+        <img src="{% static 'images/default.png' %}" class="icon-small" alt="No Picture" width="40">
+    {% endif %}
    
     {{ user.userprofile.employee_id.EmpName|default_if_none:"No Employee" }} -
     {{ user.userprofile.employee_id.EmpEmail|default_if_none:"No EmpEmail" }} -Username:

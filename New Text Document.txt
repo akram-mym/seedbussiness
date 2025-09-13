@@ -1,3 +1,18 @@
 *args দিয়ে আপনি একটি ফাংশনে যত খুশি সংখ্যক positional arguments পাঠাতে পারেন।
 
 **kwargs দিয়ে আপনি একটি ফাংশনে যত খুশি সংখ্যক keyword arguments পাঠাতে পারেন (মানে key=value আকারে)।
+
+
+echo "# Django_Project" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/akram-mym/Django_Project.git
+git push -u origin main
+
+
+
+git remote add origin https://github.com/akram-mym/Django_Project.git
+git branch -M main
+git push -u origin main

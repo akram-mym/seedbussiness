@@ -2,14 +2,14 @@ from pyexpat.errors import messages
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
-from ProjectAdmin.models import  Catagory, DealingYear
+from ProjectAdmin.models import  Catagory, Company, DealingYear
 
-from account.forms import BlockNameUpdateForm, CompanyInfoEntry, SubHeadEditForm, SubHeadForm, UserProfileForm,UserProfileListForm1,BlockNameForm
+from account.forms import BlockNameUpdateForm,  SubHeadEditForm, SubHeadForm, UserProfileForm,UserProfileListForm1,BlockNameForm
 from account.models import Company, SubHead, UserProfile,BlockName
 import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import  CatagoryForm, DealingYearForm
+from .forms import  CatagoryForm, CompanyInfoEntry, DealingYearForm
 
 # Create your views here.
 def user(request):
@@ -22,19 +22,36 @@ def home1(request):
     return render(request, 'padmin/home.html')
 
 
+
+
 def company_entry_view(request):
     if request.method == 'POST':
         form = CompanyInfoEntry(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('success_page')  # success_page আপনার URL name
+            company_form =form.save(commit=False)
+             # Get all existing com_ids and find the max number
+            existing_ids = Company.objects.values_list('com_id', flat=True)
+            max_number = 0
+            for cid in existing_ids:
+                try:
+                    num = int(cid.split('_')[1])
+                    if num > max_number:
+                        max_number = num
+                except (IndexError, ValueError):
+                    continue
+
+            new_number = max_number + 1
+            company_form.com_id = f"Com_{new_number:03d}"
+
+
+            company_form.save()
+            return redirect('ProjectAdmin:success_page')  # success_page আপনার URL name
         else:
             print(form.errors)  # ⚠️ Debugging এর জন্য
     else:
         form = CompanyInfoEntry()
         
     return render(request, 'padmin/com_info_entry.html', {'form': form})
-
      
 def com_info(request):
     com = Company.objects.all()
@@ -68,7 +85,7 @@ def search_company(request):
     return render(request,'padmin/search_company.html', context)
 
 def success_view(request):
-    return render(request, 'padmin/success.html', {'message': 'Company saved successfully!'})
+    return render(request, 'padmin/success_page.html', {'message': 'Company saved successfully!'})
 
 from django.contrib.auth.forms import UserCreationForm
 
@@ -113,7 +130,7 @@ def add_dealing_year(request):
         form = DealingYearForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('ProjectAdmin:dealing-year')  # অথবা list বা অন্য পেজ
+            return redirect('ProjectAdmin:dealing_year_list')  # অথবা list বা অন্য পেজ
     else:
         form = DealingYearForm()
     
@@ -163,7 +180,7 @@ def blockname_entry(request):
             instance = form.save(commit=False)
             
             # Auto-generate b_id safely
-            last_block = BlockName.objects.order_by('-id').first()
+            last_block = BlockName.objects.order_by('-b_id').first()
             if last_block and last_block.b_id and re.match(r'^B\d+$', last_block.b_id):
                 new_number = int(last_block.b_id[1:]) + 1
             else:

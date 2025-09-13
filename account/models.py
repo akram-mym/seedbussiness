@@ -1,21 +1,11 @@
-
 from django.db import models
 from django.utils.timezone import localtime
 # Create your models here.
 from django.db import models
 
-from ProjectAdmin.models import DealingYear, Employee
+from ProjectAdmin.models import Company, DealingYear, Employee
 
 
-# //SELECT `b_id`, `b_name`, `b_land_Ac`, `PerDecimal`, `b_des`, `bso_email`, `state`, `rlpay_day`, `land_update`, `division`, `emailst`, `com_id` FROM `blockname` WHERE 1
-
-class Company(models.Model):
-    com_id = models.AutoField(primary_key=True)
-    company_name = models.CharField(max_length=100, unique=True)
-    company_email = models.EmailField(max_length=100, unique=True)
-    is_active = models.BooleanField(default=True)  # 👈 Add this
-    def __str__(self):
-        return self.company_name   # 👈 This makes the dropdown readable
     
 DIVISION_CHOICES = [
         ('AC', 'Account'),
@@ -42,7 +32,7 @@ class CommonExp(models.Model):
     rtime = models.DateTimeField(default=current_local_datetime)         # recorded time
     status = models.CharField(default='Pending',max_length=30)   # status field, could be choices
     dy = models.ForeignKey("ProjectAdmin.DealingYear", on_delete=models.CASCADE)                  # day? (adjust type)
-    com_id = models.ForeignKey(Company, on_delete=models.CASCADE)
+    com_id = models.ForeignKey("ProjectAdmin.Company", on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -73,7 +63,7 @@ class SubHead(models.Model):
 
 from django.contrib.auth.models import User
 class BlockName(models.Model):    
-    b_id = models.CharField(max_length=10, unique=True)
+    b_id = models.CharField(max_length=20,  primary_key=True)
     b_name = models.CharField(max_length=100,unique=True)
     b_land_Ac = models.FloatField()
     PerDecimal = models.DecimalField(max_digits=10, decimal_places=2)
@@ -89,12 +79,21 @@ class BlockName(models.Model):
     land_update = models.DecimalField(max_digits=10, decimal_places=2)
     division = models.CharField(max_length=20, choices=DIVISION_CHOICES, default='AC')
     emailst = models.EmailField()
-    com_id = models.ForeignKey("Company", on_delete=models.CASCADE)
+    com_id = models.ForeignKey("ProjectAdmin.Company", on_delete=models.CASCADE)
+
+    
+    def save(self, *args, **kwargs):
+        if not self.b_id:
+            last = BlockName.objects.order_by('-b_id').first()
+            if last:
+                num = int(last.b_id[1:]) + 1
+            else:
+                num = 1
+            self.b_id = f"B{num:03d}"  # B001, B002, ...
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.b_id} - {self.b_name}"
-
-
 
 
 class Advance(models.Model):
@@ -106,7 +105,7 @@ class Advance(models.Model):
     rtime = models.DateTimeField(auto_now=True)
     entrier = models.CharField(max_length=20,default='admin_user')
     byear = models.ForeignKey("ProjectAdmin.DealingYear", on_delete=models.CASCADE, default=1)
-    com_id = models.ForeignKey(Company, on_delete=models.CASCADE, default=1)
+    com_id = models.ForeignKey("ProjectAdmin.Company", on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return str(self.receiver)

@@ -16,7 +16,7 @@ class advanceEntryForm(forms.ModelForm):
 
     class Meta:
         model = Advance
-        fields = ['date', 'receiver', 'amount', 'abrief', 'target_file']
+        fields = ['date', 'amount', 'abrief', 'target_file']
         widgets = {
             'date': forms.DateInput(attrs={
                 'type': 'date',
@@ -77,7 +77,7 @@ class advanceEntryForm(forms.ModelForm):
         return cleaned_data
 
 
-from .models import Budget, LandMeasure
+from .models import Budget, LandMeasure, SeedTransport
 
 class BudgetForm(forms.ModelForm):
     class Meta:
@@ -103,6 +103,7 @@ from .models import Person
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
+        
         # Auto-set fields: user, person_id, block_id, com_id, created_at
         exclude = ['user', 'person_id', 'block_id', 'com_id', 'created_at']
 
@@ -120,9 +121,9 @@ class PersonForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         # Dropdown label: show short code + full name
-        self.fields['catagory_short'].label_from_instance = lambda obj: f"{obj.catagoryshort} - {obj.catagoryName}"
+        self.fields['catagory_short'].label_from_instance = lambda obj: f"{obj.catagory_short} - {obj.catagoryName}"
         # Save only short code (to_field_name)
-        self.fields['catagory_short'].to_field_name = 'catagoryshort'
+        self.fields['catagory_short'].to_field_name = 'catagory_short'
 
         # Person Picture & NID Picture optional
         self.fields['person_picture'].required = False
@@ -149,9 +150,6 @@ class PersonForm(forms.ModelForm):
         return cleaned_data
 
 
-
-
-
     # Validation for mobile number
     def clean_mobile_no(self):
         mobile = self.cleaned_data.get('mobile_no')
@@ -165,16 +163,7 @@ class PersonForm(forms.ModelForm):
         if nid and not nid.isdigit():
             raise forms.ValidationError("NID number must contain digits only.")
         return nid
-# from block.models import Budget
-# from ProjectAdmin.models import Catagory
 
-# # invalid বাজেট খুঁজে বের করা
-# invalid_budgets = Budget.objects.exclude(sub_code_id__in=Catagory.objects.values_list('catagoryid', flat=True))
-
-# print("Invalid budgets:", invalid_budgets.count())
-
-# # চাইলে delete করে দিতে পারেন
-# invalid_budgets.delete()
 
 
 class LandMeasureForm(forms.ModelForm):
@@ -218,3 +207,29 @@ class LandMeasureForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-control'
             else:
                 field.widget.attrs['class'] = 'form-check-input'
+
+class SeedTransportForm(forms.ModelForm):
+    class Meta:
+        model = SeedTransport
+        fields = [
+            "sending_date",            
+            "chalan_no",
+            "seed_sent",
+            "seed_received",
+            "empty_bags",
+            "variety_name",
+            "driver_name" 
+        ]
+
+        exclude = ['b_id','departure_time','arrival_time','duration','com_id']
+
+        widgets = {
+            "sending_date": forms.DateInput(attrs={"type": "date", "class": "form-control"}),            
+            "chalan_no": forms.TextInput(attrs={"class": "form-control"}),
+            "seed_sent": forms.NumberInput(attrs={"class": "form-control"}),
+            "seed_received": forms.NumberInput(attrs={"class": "form-control"}),
+            "empty_bags": forms.NumberInput(attrs={"class": "form-control"}),
+            "variety_name": forms.TextInput(attrs={"class": "form-control"}),
+            "driver_name": forms.TextInput(attrs={"class": "form-control"}),     
+           
+        }

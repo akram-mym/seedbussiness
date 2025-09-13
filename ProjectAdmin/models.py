@@ -1,10 +1,17 @@
-
 from datetime import date
 import os
 import random
 from django.db import models
 from django.core.exceptions import ValidationError
 
+
+class Company(models.Model):
+    com_id = models.CharField(max_length=20,primary_key=True)
+    company_name = models.CharField(max_length=100, unique=True)
+    company_email = models.EmailField(max_length=100, unique=True)
+    is_active = models.BooleanField(default=True)  # 👈 Add this
+    def __str__(self):
+        return self.company_name   # 👈 This makes the dropdown readable
 
 
 class DealingYear(models.Model):
@@ -16,7 +23,7 @@ class DealingYear(models.Model):
     
     dy_session = models.CharField(max_length=20, primary_key=True)  # অর্থবছর বা সেশন
     busy_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='On')
-    com_id = models.ForeignKey("account.Company", on_delete=models.CASCADE)
+    com_id = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return f" {self.dy_session}"
@@ -40,11 +47,10 @@ class Employee(models.Model):
     EmpMobile = models.CharField(max_length=15, unique=True)
     EmpEmail = models.EmailField(max_length=50, unique=True)
     EmpBirthDate = models.DateField()
-    EmpJoininghDate = models.DateField()
-    EmpDiv = models.CharField(max_length=15)
+    EmpJoininghDate = models.DateField()    
     EmpPicture = models.ImageField(upload_to=employee_picture_upload_path, blank=True, null=True)
     EmpStatus = models.CharField(max_length=10, default='ON')
-    EmpComId = models.ForeignKey('account.Company', on_delete=models.CASCADE)
+    EmpComId = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def clean(self):
         if self.EmpBirthDate and self.EmpBirthDate > date.today():
@@ -71,7 +77,7 @@ class Catagory(models.Model):
     catagoryid = models.AutoField(primary_key=True) 
     catagoryName =models.CharField(max_length=100,unique=True)  
     catagory_short =models.CharField(max_length=20,unique=True)  
-    ComId = models.ForeignKey('account.Company', on_delete=models.CASCADE)  
+    ComId = models.ForeignKey(Company, on_delete=models.CASCADE)  
 
     def __str__(self):
-        return F"{self.catagory_short}"    
+        return F"{self.catagory_short}-{self.catagoryName}"    

@@ -140,11 +140,7 @@ table tr:hover {
 
     {% csrf_token %}
     {{ form.non_field_errors }}
-
-    <div class="form-row">
-        <label for="id_EmpId">Employee ID</label>
-        {{ form.EmpId }}
-    </div>
+    
 
     <div class="form-row">
         <label for="id_EmpName">Name</label>

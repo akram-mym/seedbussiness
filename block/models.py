@@ -66,7 +66,7 @@ class Person(models.Model):
 
 class LandMeasure(models.Model):
     edate = models.DateField()  # Entry/created date
-    b_id = models.IntegerField()  # Building/Block ID
+    b_id = models.CharField(max_length=20)  # Building/Block ID
     plot_no = models.CharField(max_length=100)  # Plot number (string, can adjust length)
     llid = models.ForeignKey(Person, on_delete=models.CASCADE)  # Land/Location ID
     length1 = models.DecimalField(max_digits=10, decimal_places=2)  # Length side 1
@@ -76,7 +76,26 @@ class LandMeasure(models.Model):
     deci = models.DecimalField(max_digits=10, decimal_places=2)  # Decimal measurement
     paid = models.BooleanField(default=False)  # Payment status
     state = models.CharField(max_length=100)  # State/Status
-    com_id = models.IntegerField()  # Company ID
+    com_id = models.CharField(max_length=20)  # Company ID
 
     def __str__(self):
         return f"Plot {self.plot_no} - {self.state}"        
+    
+
+class SeedTransport(models.Model):
+    sending_date = models.DateField()    
+    b_id = models.CharField(max_length=20)
+    chalan_no = models.CharField(max_length=20)
+    seed_sent = models.IntegerField()
+    seed_received = models.IntegerField(default=0)
+    empty_bags = models.IntegerField(default=0)
+    variety_name = models.CharField(max_length=50)
+    driver_name = models.CharField(max_length=50)
+    departure_time = models.DateTimeField()
+    arrival_time = models.DateTimeField(null=True, blank=True)
+    duration = models.DecimalField(max_digits=5, decimal_places=2, default=0)  # in hours, for example
+    day = models.CharField(max_length=20)
+    com_id = models.CharField(max_length=20)
+
+
+

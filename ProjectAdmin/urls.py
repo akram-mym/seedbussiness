@@ -6,7 +6,7 @@ app_name = 'ProjectAdmin'  # ← এটি থাকা বাধ্যতাম
 
 urlpatterns = [ 
     path('', views.home, name='padmin'),
-    path('com_info_entry', views.company_entry_view, name='company_entry'),
+    path('com_info_entry', views.company_entry_view, name='company_entry'),    
     path('success_page', views.success_view, name='success_page'),
 
     path('com_info', views.com_info, name='com_info'),

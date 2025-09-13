@@ -23,8 +23,9 @@ urlpatterns = [
     path('landmeasure_list', views.landmeasure_list, name='landmeasure_list'),
     path('create/', views.landmeasure_create, name='landmeasure_create'),
     path('edit/<int:pk>/', views.landmeasure_edit, name='landmeasure_edit'),
-  
-    
+
+    path("seed-transport/add/", views.seed_transport_create, name="seed_transport_add"),
+    path("seed-transport/", views.seed_transport_list, name="seed_transport_list"),    
     
 ]
 

@@ -2,15 +2,13 @@ import datetime
 from pyexpat.errors import messages
 from django.db.models import Q
 from django.http import HttpResponse
-from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import get_object_or_404, render, redirect
 from ProjectAdmin.forms import EmployeeInfoEntry
 from ProjectAdmin.models import Employee
 
-from account.models import  Company
-import block
+from ProjectAdmin.models import  Company
 # from account.forms import BlockNameForm
-from .forms import   EmployeeForm, HeadExpForm, HeadExpViewForm, UserProfileForm
+from account.forms import   EmployeeForm, HeadExpForm, UserProfileForm
 from django.shortcuts import render, redirect
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -112,12 +110,8 @@ def success_emp(request):
 def EmployeeInfoEntryView(request):
     if request.method == 'POST' :
         form = EmployeeInfoEntry(request.POST, request.FILES)  # ✅ গুরুত্বপূর্ণ
-        if form.is_valid():
-            instance = form.save(commit=False)  
-            
-            user = request.user  
-            instance.EmpComId = user.userprofile.com_id
-            instance.save()
+        if form.is_valid(): 
+            form.save()
             return redirect('account:success_emp')
 
         else:
