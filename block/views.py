@@ -343,7 +343,23 @@ def landmeasure_create(request):
             landmeasure.b_id = user_profile.block_id if user_profile.block_id else 0
             landmeasure.com_id = user_profile.com_id if user_profile.com_id else 0
             landmeasure.state = "ON"
-            landmeasure.plot_no = request.POST.get("plot_no")
+            
+            # Format plot_no => P + 3 digits
+            raw_plot_no = request.POST.get("plot_no", "").strip()
+            if raw_plot_no:
+                # Remove leading P if user typed it
+                if raw_plot_no.upper().startswith("P"):
+                    raw_plot_no = raw_plot_no[1:]
+
+                # Ensure it's numeric and 3 digits
+                try:
+                    num = int(raw_plot_no)
+                    landmeasure.plot_no = f"P{str(num).zfill(3)}"   # e.g. P001, P045, P123
+                except ValueError:
+                    # fallback if not numeric
+                    landmeasure.plot_no = "P000"
+            else:
+                landmeasure.plot_no = "P000"
 
             # Auto-calculate deci
             landmeasure.deci = calculate_deci(
@@ -354,7 +370,7 @@ def landmeasure_create(request):
             )
 
             landmeasure.save()
-            return redirect("landmeasure_list")
+            return redirect("block:landmeasure_list")
     else:
         form = LandMeasureForm()
 
