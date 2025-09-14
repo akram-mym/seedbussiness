@@ -2,6 +2,15 @@
 <html lang="en">
     {% load static %}
 <head>
+  <style>
+    .icon-small {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      }
+</style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">  
@@ -10,7 +19,7 @@
 </head>
 <body>
    <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-
+   
   <div class="container-fluid">
     <a class="navbar-brand" href="{% url 'ProjectAdmin:padmin' %}">Project Admin</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,8 +37,7 @@
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Apps
           </a>
-          <ul class="dropdown-menu">
-            
+          <ul class="dropdown-menu">            
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:company_entry' %}">Company Info Entry</a></li>
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:com_info' %}">Company Info </a></li>
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:search_company' %}">Search Company</a></li>
@@ -39,6 +47,7 @@
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:CreateUser' %}">CreateUser</a></li>
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:userprofile_list' %}">User</a></li>
             <li><a class="dropdown-item" href="{% url 'ProjectAdmin:subheadlist' %}">Subhead List</a></li>
+            <li><a class="dropdown-item" href="{% url 'ProjectAdmin:create_hvariety' %}">Add hvariety</a></li>            
             
 
             <li><hr class="dropdown-divider"></li>
@@ -58,6 +67,24 @@
         <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
+      </ul>
+      <!-- Right side menu: login/logout -->
+      <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+              {% if user.userprofile.employee_id.EmpPicture %}
+                  <img src="{{ user.userprofile.employee_id.EmpPicture.url }}" class="icon-small" alt="Employee Picture" width="20">
+              {% else %}
+                  <img src="{% static 'images/default.png' %}" class="icon-small" alt="No Picture" width="40">
+              {% endif %}
+
+              <form method="post" action="{% url 'account:logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="nav-link btn btn-link" style="padding: 0;">লগআউট</button>
+              </form>
+          {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'account:login' %}">লগইন</a></li>
+              <!-- <li class="nav-item"><a class="nav-link" href="{% url 'account:register' %}">রেজিস্টার</a></li> -->
+          {% endif %}
       </ul>
       <form class="d-flex" role="search">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
@@ -108,6 +135,30 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
+</div>
+
+<div>
+      {% if user.is_authenticated %}      
+<p>
+    Welcome,
+    {{ user.userprofile.com_id.company_name|default_if_none:"No Company" }} -
+    {{ user.userprofile.block_id.b_id|default_if_none:"No Block" }} -
+    {{ user.userprofile.byear|default_if_none:"No Year" }},(
+    {{ user.userprofile.employee_id|default:"No Empid" }} )-
+    {% if user.userprofile.employee_id.EmpPicture %}
+    <img src="{{ user.userprofile.employee_id.EmpPicture.url }}" class="icon-small" alt="Employee Picture" width="40">
+    {% else %}
+        <img src="{% static 'images/default.png' %}" class="icon-small" alt="No Picture" width="40">
+    {% endif %}
+   
+    {{ user.userprofile.employee_id.EmpName|default_if_none:"No Employee" }} -
+    {{ user.userprofile.employee_id.EmpEmail|default_if_none:"No EmpEmail" }} -Username:
+    {{ user.username }} -
+    {{ user.first_name|default:user.username }}
+</p>
+      {% else %}
+        <p>Welcome, Guest!</p>
+      {% endif %}
 </div>
 
 <div>

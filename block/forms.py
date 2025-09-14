@@ -229,7 +229,15 @@ class SeedTransportForm(forms.ModelForm):
             "seed_sent": forms.NumberInput(attrs={"class": "form-control"}),
             "seed_received": forms.NumberInput(attrs={"class": "form-control"}),
             "empty_bags": forms.NumberInput(attrs={"class": "form-control"}),
-            "variety_name": forms.TextInput(attrs={"class": "form-control"}),
-            "driver_name": forms.TextInput(attrs={"class": "form-control"}),     
+            "variety_name": forms.Select(attrs={'class': 'form-select'}),
+            "driver_id": forms.TextInput(attrs={"class": "form-control"}),     
            
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)        
+        
+        ll_category = Catagory.objects.get(catagory_short="DRV")
+        self.fields['driver_id'].queryset = Person.objects.filter(catagory_short=ll_category)
+        self.fields['driver_id'].empty_label = "Select Person"
+        self.fields['driver_id'].widget.attrs.update({'class': 'form-select'})  # select style   

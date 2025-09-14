@@ -2,14 +2,14 @@ from pyexpat.errors import messages
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
-from ProjectAdmin.models import  Catagory, Company, DealingYear
-
+from ProjectAdmin.models import  Catagory, Company, DealingYear, hvariety
+from django.db.models import Max
 from account.forms import BlockNameUpdateForm,  SubHeadEditForm, SubHeadForm, UserProfileForm,UserProfileListForm1,BlockNameForm
 from account.models import Company, SubHead, UserProfile,BlockName
 import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import  CatagoryForm, CompanyInfoEntry, DealingYearForm
+from .forms import  CatagoryForm, CompanyInfoEntry, DealingYearForm, HvarietyForm
 
 # Create your views here.
 def user(request):
@@ -377,3 +377,77 @@ def subhead_delete(request, pk):
 
     # GET request → show confirmation page
     return render(request, 'padmin/subhead_confirm_delete.html', {'subhead': subhead})
+
+
+
+@login_required
+def create_hvariety(request):
+    if request.method == "POST":
+        form = HvarietyForm(request.POST)
+        if form.is_valid():
+            hvariety_obj = form.save(commit=False)
+            hvariety_obj = form.save(commit=False)
+
+            # com_id assign
+            hvariety_obj.com_id = request.user.userprofile.com_id
+
+            # hvariety_id generate
+            last_id = hvariety.objects.aggregate(max_id=Max('hvariety_id'))['max_id']
+            new_num = 1
+            if last_id:
+                try:
+                    last_num = int(last_id.split('_')[1])
+                    new_num = last_num + 1
+                except:
+                    pass
+            hvariety_obj.hvariety_id = f"hv_{new_num:02d}"
+
+            hvariety_obj.save()
+        else:
+         # Form invalid, show errors
+         print("Form Validation Errors:", form.errors)
+    else:
+        form = HvarietyForm()
+
+    return render(request, "padmin/hvariety/hvariety_form.html", {"form": form})
+
+@login_required
+def hvariety_list(request):
+    # show only varieties belonging to the logged-in user's company
+    if hasattr(request.user, 'userprofile') and request.user.userprofile.com_id:
+        hvarieties = hvariety.objects.filter(com_id=request.user.userprofile.com_id)
+    else:
+        hvarieties = hvariety.objects.none()  # empty if no company linked
+
+    return render(request, "padmin/hvariety/hvariety_list.html", {"hvarieties": hvarieties})
+
+# ✏️ Edit hvariety
+@login_required
+def edit_hvariety(request, pk):
+    hv = get_object_or_404(hvariety, pk=pk)
+
+    if request.method == "POST":
+        form = HvarietyForm(request.POST, instance=hv)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            # keep com_id linked to the user’s profile
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.com_id:
+                obj.com_id = request.user.userprofile.com_id
+            obj.save()
+            return redirect("ProjectAdmin:hvariety_list")
+    else:
+        form = HvarietyForm(instance=hv)
+
+    return render(request, "padmin/hvariety/hvariety_form.html", {"form": form})
+
+
+# 🗑️ Delete hvariety
+@login_required
+def delete_hvariety(request, pk):
+    hv = get_object_or_404(hvariety, pk=pk)
+
+    if request.method == "POST":
+        hv.delete()
+        return redirect("ProjectAdmin:hvariety_list")
+
+    return render(request, "padmin/hvariety/hvariety_confirm_delete.html", {"hvariety": hv})

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Catagory, Company, DealingYear, Employee
+from .models import Catagory, Company, DealingYear, Employee, hvariety
 
 class CompanyInfoEntry(forms.ModelForm):
     class Meta:
@@ -105,3 +105,22 @@ class UserProfileForm(forms.ModelForm):
             'byear': forms.Select(attrs={'class': 'form-select'}),
             'com_id': forms.Select(attrs={'class': 'form-select'}),
         }
+
+
+class HvarietyForm(forms.ModelForm):
+    class Meta:
+        model = hvariety
+        fields = ['hvariety_name', 'contract_company']
+        exclude = ['hvariety_id', 'com_id']
+        widgets = {           
+            'hvariety_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Variety Name'}),
+            'contract_company': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Contract Company'}),
+            
+        }
+
+    # ✅ Custom validation to prevent duplicate hvariety_name
+    def clean_hvariety_name(self):
+        name = self.cleaned_data.get('hvariety_name')
+        if hvariety.objects.filter(hvariety_name__iexact=name).exists():
+            raise forms.ValidationError(f"Variety Name '{name}' already exists.")
+        return name    

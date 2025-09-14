@@ -1,0 +1,53 @@
+{% extends "padmin/base1.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-3">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add New HVariety</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Show non-field errors (e.g., if no company is linked) -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <!-- hvariety_id (readonly, auto-generated in views.py) -->
+                <div class="mb-3">
+                    <label class="form-label">Variety ID (auto-generated)</label>
+                    <input type="text" class="form-control" value="{{ form.instance.hvariety_id|default:'Will be assigned automatically' }}" readonly>
+                </div>
+
+                <!-- hvariety_name -->
+                <div class="mb-3">
+                    {{ form.hvariety_name.label_tag }}
+                    {{ form.hvariety_name }}
+                    {{ form.hvariety_name.errors }}
+                </div>
+
+                <!-- contract_company -->
+                <div class="mb-3">
+                    {{ form.contract_company.label_tag }}
+                    {{ form.contract_company }}
+                    {{ form.contract_company.errors }}
+                </div>
+
+                <!-- com_id (hidden since it's assigned from user profile) -->
+                {{ form.com_id.as_hidden }}
+
+                <button type="submit" class="btn btn-success">Save</button>
+                <a href="{% url 'ProjectAdmin:hvariety_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    <a href="{% url 'ProjectAdmin:hvariety_list' %}" class="btn btn-info">HVariety List</a>
+</div>
+{% endblock %}

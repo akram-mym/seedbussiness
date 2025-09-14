@@ -1,0 +1,16 @@
+{% extends "padmin/base1.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow rounded-3">
+        <div class="card-body text-center">
+            <h4>Are you sure you want to delete this variety?</h4>
+            <p><strong>{{ hvariety.hvariety_id }}</strong> - {{ hvariety.hvariety_name }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'ProjectAdmin:hvariety_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

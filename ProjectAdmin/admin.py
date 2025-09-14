@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 
-from ProjectAdmin.models import DealingYear, Employee,Catagory,Company
+from ProjectAdmin.models import DealingYear, Employee,Catagory,Company, hvariety
 
 # Admin class for Company
 class CompanyAdmin(admin.ModelAdmin):
@@ -25,7 +25,13 @@ class CatagoryAdmin(admin.ModelAdmin):
                     if field.name != "some_big_text_field" ]
 
 
+class hvarietyAdmin(admin.ModelAdmin):
+    list_display = [field.name for field in hvariety._meta.fields
+                    if field.name != "some_big_text_field" ]
+
+
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(DealingYear, DealingYearAdmin)
 admin.site.register(Catagory, CatagoryAdmin)
+admin.site.register(hvariety, hvarietyAdmin)

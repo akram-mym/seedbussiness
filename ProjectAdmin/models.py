@@ -81,3 +81,12 @@ class Catagory(models.Model):
 
     def __str__(self):
         return F"{self.catagory_short}-{self.catagoryName}"    
+    
+class hvariety(models.Model):
+    hvariety_id =models.CharField(max_length=20, primary_key=True)
+    hvariety_name =models.CharField(max_length=50)
+    contract_company = models.CharField(max_length=100)
+    com_id = models.ForeignKey(Company, on_delete=models.CASCADE)    
+
+    def __str__(self):
+        return f"{self.hvariety_id} {self.hvariety_name}"  # dropdown এ নাম দেখাবে

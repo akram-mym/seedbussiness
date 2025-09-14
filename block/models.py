@@ -2,7 +2,7 @@ import os
 from django.db import models
 
 # from ProjectAdmin.models import Catagory
-from ProjectAdmin.models import Catagory
+from ProjectAdmin.models import Catagory, hvariety
 from account.models import SubHead
 from django.contrib.auth.models import User
 
@@ -89,7 +89,7 @@ class SeedTransport(models.Model):
     seed_sent = models.IntegerField()
     seed_received = models.IntegerField(default=0)
     empty_bags = models.IntegerField(default=0)
-    variety_name = models.CharField(max_length=50)
+    variety_name = models.ForeignKey(hvariety,on_delete=models.CASCADE)
     driver_name = models.CharField(max_length=50)
     departure_time = models.DateTimeField()
     arrival_time = models.DateTimeField(null=True, blank=True)

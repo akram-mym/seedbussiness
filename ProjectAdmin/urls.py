@@ -41,5 +41,10 @@ urlpatterns = [
     path('catagory/list/', views.Catagory_list, name='catagory_list'),
     path('catagory/edit/<int:pk>/', views.Catagory_edit, name='catagory_edit'),
     path('catagory/delete/<int:pk>/', views.Catagory_delete, name='catagory_delete'),
+
+    path("hvarieties/", views.create_hvariety, name="create_hvariety"),
+    path("hvarieties/list/", views.hvariety_list, name="hvariety_list"),
+    path("hvarieties/<str:pk>/edit/", views.edit_hvariety, name="edit_hvariety"),
+    path("hvarieties/<str:pk>/delete/", views.delete_hvariety, name="delete_hvariety"),
 ]
 

@@ -1,0 +1,48 @@
+{% extends "padmin/base1.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>HVariety List</h3>
+        <a href="{% url 'ProjectAdmin:create_hvariety' %}" class="btn btn-primary">+ Add New HVariety</a>
+    </div>
+
+    {% if hvarieties %}
+        <div class="card shadow rounded-3">
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Variety ID</th>
+                            <th scope="col">Variety Name</th>
+                            <th scope="col">Contract Company</th>
+                            <th scope="col">Company</th>
+                            <th scope="col" class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for hv in hvarieties %}
+                        <tr>
+                            <td>{{ hv.hvariety_id }}</td>
+                            <td>{{ hv.hvariety_name }}</td>
+                            <td>{{ hv.contract_company }}</td>
+                            <td>{{ hv.com_id.company_name }}</td>
+                            <td class="text-center">
+                                <a href="{% url 'ProjectAdmin:edit_hvariety' hv.hvariety_id %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{% url 'ProjectAdmin:delete_hvariety' hv.hvariety_id %}" class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Are you sure you want to delete this variety?');">
+                                   Delete
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">No HVarieties found. <a href="{% url 'ProjectAdmin:create_hvariety' %}">Add one now</a>.</div>
+    {% endif %}
+</div>
+{% endblock %}
